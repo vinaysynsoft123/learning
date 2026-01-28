@@ -1,0 +1,262 @@
+/* ===== Base ===== */
+body {
+    background-color: #f4f6f9;
+    margin: 0;
+}
+
+.room-select:hover {
+    transform: translateY(-5px);
+    transition: 0.3s;
+    border: 1px solid #0d6efd;
+}
+.checkin-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.checkin-item:last-child {
+    border-bottom: none;
+}
+.stat-card {
+    border-radius: 14px;
+    transition: all 0.2s ease;
+}
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+.card-header-clean {
+    background: #fff;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.checkin-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.checkin-item:last-child {
+    border-bottom: none;
+}
+.checkin-time {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 20px;
+    background: #f1f3f5;
+    font-weight: 600;
+}
+
+.receipt-card {
+    max-width: 900px;
+    margin: auto;
+}
+
+.section-title {
+    font-size: 13px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+
+.receipt-box {
+    background: #f8f9fa;
+    padding: 15px 0;
+    border-radius: 6px;
+}
+
+.label {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.value {
+    font-weight: 600;
+}
+
+.info-row,
+.amount-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.amount-row {
+    font-weight: 500;
+}
+
+.amount-row.balance {
+    font-weight: 700;
+    border-top: 1px dashed #ccc;
+    padding-top: 8px;
+    color: #dc3545;
+}
+
+.notes-box {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 6px;
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    body {
+        background: #fff;
+    }
+
+    .receipt-card {
+        border: none;
+        box-shadow: none;
+    }
+}
+/* ===== Header ===== */
+.navbar {
+    height: 70px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    z-index: 1030;
+}
+
+#roomsModal .modal-dialog {
+    margin-top: 50px; /* adjust distance from top */
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 250px;
+    height: calc(100vh - 70px);
+    background: #343a40;
+    overflow-y: auto;
+    transition: left 0.3s ease;
+    z-index: 1020;
+}
+
+.pagination .page-item .page-link {
+    border-radius: 6px;
+    margin: 0 3px;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.sidebar .nav-link {
+    color: #adb5bd;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin: 4px 10px;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background: #495057;
+    color: #fff;
+}
+
+/* ===== Main Content ===== */
+.main-content {
+    margin-left: 250px;
+    padding: 90px 25px 25px;
+    min-height: calc(100vh - 70px);
+    transition: margin-left 0.3s ease;
+}
+.booked-badge {
+    position: relative;
+    cursor: help;
+}
+
+.booked-badge::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000;
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 11px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s ease;
+    z-index: 10;
+}
+
+.booked-badge::before {
+    content: "";
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: #000 transparent transparent transparent;
+    opacity: 0;
+}
+
+.booked-badge:hover::after,
+.booked-badge:hover::before {
+    opacity: 1;
+}
+/* ===== Footer ===== */
+.footer {
+    margin-left: 250px;
+    height: 70px;
+    background: #fff;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    transition: margin-left 0.3s ease;
+}
+
+/* ===== Toast ===== */
+.toast-container {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 1055;
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 992px) {
+    .sidebar {
+        left: -250px;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .main-content,
+    .footer {
+        margin-left: 0;
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1010;
+    }
+
+    .overlay.active {
+        display: block;
+    }
+}

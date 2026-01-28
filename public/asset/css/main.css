@@ -1,0 +1,170 @@
+  body {
+        background-color: #f4f6f9;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      /* Header */
+      .header {
+        background-color: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+        margin: 2rem auto;
+        max-width: 900px;
+      }
+
+      .navbar-nav .nav-link {
+        color: #333 !important;
+        font-weight: 500;
+        padding: 0.5rem 1rem !important;
+      }
+
+      .agent-login-btn {
+        background-color: #e0f7fa;
+        color: #00acc1 !important;
+        border-radius: 30px;
+        padding: 0.5rem 1.5rem;
+        font-weight: 500;
+      }
+
+      .agent-login-btn:hover {
+        background-color: #b2ebf2;
+      }
+
+      /* Main Form Card */
+      .form-card {
+        background-color: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        padding: 3rem;
+        margin: 0 auto 4rem;
+        max-width: 900px;
+      }
+
+      .form-label {
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 0.75rem;
+      }
+
+      .form-select,
+      .date-group {
+        border-radius: 15px;
+        border: 1px solid #e0e0e0;
+
+        font-size: 15px;
+        background-color: #fafafa;
+      }
+
+      .form-select:focus {
+        border-color: #80deea;
+        box-shadow: 0 0 0 0.25rem rgba(0, 206, 209, 0.15);
+        background-color: #fff;
+      }
+
+      .date-group {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .date-group input {
+        border-radius: 15px;
+        border: 1px solid #e0e0e0;
+        padding: 0.9rem 1.2rem;
+        font-size: 15px;
+        background-color: #fafafa;
+        width: 100%;
+        padding-right: 3.5rem;
+      }
+
+      .date-group input:focus {
+        border-color: #80deea;
+        box-shadow: 0 0 0 0.25rem rgba(0, 206, 209, 0.15);
+        background-color: #fff;
+      }
+
+      .date-group .calendar-icon {
+        position: absolute;
+        right: 1rem;
+        color: #ff6d00;
+        font-size: 1.3rem;
+        pointer-events: none;
+      }
+
+      .note-text {
+        font-size: 12px;
+        color: #777;
+      }
+
+      /* Room Section */
+      .room-box {
+        background-color: #f5f5f5;
+        border-radius: 15px;
+        padding: 1.5rem;
+        position: relative;
+        margin-bottom: 1.5rem;
+      }
+
+      .room-title {
+        background-color: #e0e0e0;
+        padding: 0.5rem 1.2rem;
+        border-radius: 30px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        display: inline-block;
+        margin-bottom: 1rem;
+      }
+
+      .remove-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background-color: #e0e0e0;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        color: #666;
+        font-size: 1.2rem;
+      }
+
+      .add-room-btn {
+        background-color: #00695c;
+        color: white;
+        border-radius: 25px;
+        padding: 0.9rem 2.5rem;
+        font-weight: 600;
+        width: 100%;
+        font-size: 1.1rem;
+      }
+
+      /* Markup & GST */
+      .markup-group .input-group-text {
+        background-color: #fafafa;
+        border-radius: 0 15px 15px 0;
+      }
+
+      /* Calculate Button */
+      .calculate-btn {
+        background-color: #ff6d00;
+        color: white;
+        border-radius: 25px;
+        font-size: 1.3rem;
+        font-weight: 600;
+        width: 100%;
+        box-shadow: 0 6px 20px rgba(255, 109, 0, 0.3);
+      }
+
+      /* Footer */
+      footer {
+        background-color: #f0f0f0;
+        padding: 3rem 0;
+        font-size: 0.95rem;
+        color: #555;
+      }
+
+      footer a {
+        color: #00acc1;
+        text-decoration: none;
+      }
