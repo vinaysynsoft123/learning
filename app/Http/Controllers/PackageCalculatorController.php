@@ -16,7 +16,8 @@ class PackageCalculatorController extends Controller
 {
     public function index()
     {
-        return view('calculator.index', [
+        return view('frontend.calculator.index', [
+            
             'states'          => State::where('status', 1)->get(),
             'destinations'    => Destination::where('status', 1)->get(),
             'themes'          => Theme::where('status', 1)->get(),
@@ -99,7 +100,7 @@ class PackageCalculatorController extends Controller
     $hotel   = HotelCategory::findOrFail($data['hotel_category_id']);
     $vehicle = Vehicle::findOrFail($data['vehicle_id']);
 
-    $pdf = PDF::loadView('calculator.pdf', array_merge($data, [
+    $pdf = PDF::loadView('frontend.calculator.pdf', array_merge($data, [
         'package' => $package,
         'hotel'   => $hotel,
         'vehicle' => $vehicle,

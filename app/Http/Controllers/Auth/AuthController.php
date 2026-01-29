@@ -20,26 +20,44 @@ class AuthController extends Controller
     }
 
 
-    public function login(Request $request)
-    {
-        $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required',
-        ]);
+ public function login(Request $request)
+{
+    // 🔹 Validate inputs
+    $request->validate([
+        'email'    => 'required|email',
+        'password' => 'required',
+    ]);
 
-        $credentials = $request->only('email', 'password');
+    $credentials = $request->only('email', 'password');
 
-       if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended(route('dashboard'))
-                ->with('success', 'Welcome back, ' . auth()->user()->name . '!');
+    if (Auth::attempt($credentials)) {
+        // Regenerate session
+        $request->session()->regenerate();
+
+        $user = auth()->user();
+
+        // 🔹 Role-based redirect
+        if ($user->role === 'Admin') {
+            return redirect()->route('dashboard')
+                ->with('success', 'Welcome back, ' . $user->name . '!');
+        } elseif ($user->role === 'Agent') {
+            return redirect()->route('agent.dashboard')
+                ->with('success', 'Welcome back, ' . $user->name . '!');
+        } else {
+            // Optional: handle other roles
+            Auth::logout();
+            return back()
+                ->withErrors(['email' => 'Unauthorized role.'])
+                ->with('error', 'You do not have access to login.');
         }
+    }
 
-     return back()
+    // 🔹 Login failed
+    return back()
         ->withErrors(['email' => 'Invalid email or password.'])
         ->with('error', 'Login failed. Please check your credentials.')
         ->onlyInput('email');
-    }
+}
 
 
     public function showRegister()
@@ -72,11 +90,11 @@ class AuthController extends Controller
 
 
  public function dashboard(DashboardService $dashboardService)
-{
-    $counts = $dashboardService->masterCounts();
+    {
+        $counts = $dashboardService->masterCounts();
 
-    return view('dashboard', compact('counts'));
-}
+        return view('dashboard', compact('counts'));
+    }
 
     // Logout
     public function logout(Request $request)
@@ -101,34 +119,34 @@ class AuthController extends Controller
         return view('users.edit', compact('user'));
     }
 
-public function update(Request $request, User $user)
-{
-    $request->validate([
-        'name'   => 'required|string|max:255',
-        'email'  => 'required|email|max:255|unique:users,email,' . $user->id,
-        'mobile' => 'nullable|string|max:15',
-        'role'   => 'required|string',
-        'status' => 'required|in:0,1',
-        'password' => 'nullable|min:8|confirmed',
-    ]);
+    public function update(Request $request, User $user)
+    {
+        $request->validate([
+            'name'   => 'required|string|max:255',
+            'email'  => 'required|email|max:255|unique:users,email,' . $user->id,
+            'mobile' => 'nullable|string|max:15',
+            'role'   => 'required|string',
+            'status' => 'required|in:0,1',
+            'password' => 'nullable|min:8|confirmed',
+        ]);
 
-    $data = $request->only([
-        'name',
-        'email',
-        'mobile',
-        'role',
-        'status',
-    ]);
+        $data = $request->only([
+            'name',
+            'email',
+            'mobile',
+            'role',
+            'status',
+        ]);
 
-    $data['is_verify'] = $request->has('is_verify') ? 1 : 0;
+        $data['is_verify'] = $request->has('is_verify') ? 1 : 0;
 
-    if ($request->filled('password')) {
-        $data['password'] = Hash::make($request->password);
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
+
+        return redirect()->route('users')->with('success', 'User updated');
     }
-
-    $user->update($data);
-
-    return redirect()->route('users')->with('success', 'User updated');
-}
 
 }

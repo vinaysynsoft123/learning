@@ -39,6 +39,7 @@
                         <td>
                            <a href="{{ route('users.edit', $user) }}" class="btn btn-warning btn-sm">Edit</a>
 
+                           <a href="{{ route('users.show', $user) }}" class="btn btn-warning btn-sm">View</a>
 
                             <form action="#" method="POST" class="d-inline">
                                 @csrf

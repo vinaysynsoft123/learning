@@ -50,4 +50,10 @@ class User extends Authenticatable
     {
         return $query->where('status', 1);
     }
+
+    public function company()
+{
+    return $this->hasOne(UserCompany::class);
+}
+
 }

@@ -10,6 +10,8 @@ use App\Http\Controllers\HotelCategoryController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UsersController;
+use App\Http\Controllers\AgentController;
 
 
 Route::middleware('guest')->group(function () {
@@ -24,6 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout',   [AuthController::class, 'logout'])->name('logout');
     Route::get('/users',[AuthController::class, 'user_list'])->name('users');
     Route::get('/users/{user}/edit', [AuthController::class, 'edit'])->name('users.edit');
+    Route::get('/users/{user}', [UsersController::class, 'show'])->name('users.show');
     Route::put('/users/{user}', [AuthController::class, 'update'])->name('users.update');
 
     Route::get('/admin/profile', [AuthController::class, 'edit'])->name('admin.profile');
@@ -47,18 +50,17 @@ Route::middleware('auth')->group(function () {
 
 });
 
+Route::middleware(['auth','agent'])->group(function() {
+    Route::get('/agent/dashboard', [AgentController::class, 'dashboard'])->name('agent.dashboard');
+    Route::post('/agent/logout', [AgentController::class, 'logout'])->name('agent.logout');
+});
 
-
-
-
-// Calculator page
 Route::get('/package-calculator', [PackageCalculatorController::class, 'index'])
     ->name('package.calculator');
 
-// Calculate price
+
 Route::post('/calculator/calculate', [PackageCalculatorController::class, 'calculate'])
     ->name('calculator.calculate');
 
-// 🔥 View PDF (new tab + download)
 Route::get('/calculator/pdf/{token}', [PackageCalculatorController::class, 'viewPdf'])
     ->name('calculator.pdf');

@@ -1,21 +1,59 @@
-    <header class="header">
-      <div class="container">
-        <div
-          class="d-flex align-items-center justify-content-between flex-wrap"
-        >
-          <img
-            src=""
-            alt="Logo"
-            height="50"
-          />
-          <nav class="nav">
-            <a class="nav-link" href="#">Home</a>
-            <a class="nav-link" href="#">About Us</a>
-            <a class="nav-link" href="#">Destinations</a>
-            <a class="nav-link" href="#">Services</a>
-            <a class="nav-link" href="#">Contact</a>
-            <a href="#" class="btn agent-login-btn ms-4">Agent Login</a>
-          </nav>
+<header class="header py-3 bg-white shadow-sm">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between">
+
+            <!-- LOGO -->
+            <img src="{{ asset('logo.png') }}" alt="Logo" height="50">
+
+            <!-- NAV -->
+            <ul class="nav align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Destinations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Services</a>
+                </li>
+               
+
+                @auth
+                    @if (auth()->user()->role === 'Agent')
+                        <li class="nav-item dropdown ms-3">
+                            <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                                {{ auth()->user()->name }}
+                            </button>
+
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('agent.dashboard') }}">
+                                        Dashboard
+                                    </a>
+                                </li>
+                                <li>
+                                    <form action="{{ route('agent.logout') }}" method="POST">
+                                        @csrf
+                                        <button class="dropdown-item text-danger">
+                                            Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+                @else
+                    <li class="nav-item ms-3">
+                        <a href="{{ route('register') }}" class="btn btn-outline-primary">
+                            Agent Login
+                        </a>
+                    </li>
+                @endauth
+            </ul>
+
         </div>
-      </div>
-    </header>
+    </div>
+</header>
