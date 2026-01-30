@@ -13,7 +13,6 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AgentController;
 
-
 Route::middleware('guest')->group(function () {
     Route::get('/login',    [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login',   [AuthController::class, 'login']);
@@ -54,6 +53,10 @@ Route::middleware(['auth','agent'])->group(function() {
     Route::get('/agent/dashboard', [AgentController::class, 'dashboard'])->name('agent.dashboard');
     Route::post('/agent/logout', [AgentController::class, 'logout'])->name('agent.logout');
 });
+
+
+Route::get('/', [PackageCalculatorController::class, 'index'])
+    ->name('package.calculator');
 
 Route::get('/package-calculator', [PackageCalculatorController::class, 'index'])
     ->name('package.calculator');

@@ -8,7 +8,7 @@
             <!-- NAV -->
             <ul class="nav align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About Us</a>
@@ -18,8 +18,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Services</a>
-                </li>
-               
+                </li>              
 
                 @auth
                     @if (auth()->user()->role === 'Agent')

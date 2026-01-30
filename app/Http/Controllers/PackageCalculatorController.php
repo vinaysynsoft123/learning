@@ -76,7 +76,6 @@ class PackageCalculatorController extends Controller
             'package_id'        => $package->id,
             'hotel_category_id' => $hotel->id,
             'vehicle_id'        => $vehicle->id,
-
             'perPersonPrice' => $perPersonPrice,
             'adultCount'     => $adultCount,
             'markupPercent'  => $markupPercent,
