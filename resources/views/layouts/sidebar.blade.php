@@ -5,6 +5,12 @@ a<div class="sidebar" id="sidebar">
                 <i class="bi bi-house me-3"></i> Dashboard
             </a>
         </li>
+
+           <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('package_calculator') ? 'active' : '' }}" href="{{ route('admin.package.calculations') }}"><i
+                    class="bi bi-people me-3"></i> Package Calculator</a>
+        </li>
+
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('destinations') ? 'active' : '' }}" href="{{ route('destinations.index') }}">
                 <i class="bi bi-calendar3 me-3"></i> Destinations

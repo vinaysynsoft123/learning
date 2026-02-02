@@ -8,8 +8,10 @@ use App\Models\Theme;
 use App\Models\Package;
 use App\Models\HotelCategory;
 use App\Models\Vehicle;
+use App\Models\TourCalculation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+
 use PDF;
 
 class PackageCalculatorController extends Controller
@@ -27,14 +29,15 @@ class PackageCalculatorController extends Controller
         ]);
     }
 
- public function calculate(Request $request)
+public function calculate(Request $request)
 {
     $request->validate([
-        'theme_id' => 'required',
-        'package_id' => 'required',
-        'hotel_category_id' => 'required',
-        'vehicle_id' => 'required',
-        'rooms' => 'required|array',
+        'destination_id'     => 'required',
+        'theme_id'           => 'required',
+        'package_id'         => 'required',
+        'hotel_category_id'  => 'required',
+        'vehicle_id'         => 'required',
+        'rooms'              => 'required|array',
     ]);
 
     $package = Package::findOrFail($request->package_id);
@@ -46,12 +49,15 @@ class PackageCalculatorController extends Controller
     $vehiclePrice   = $vehicle->price_per_day * ($package->nights + 1);
 
     $adultCount = 0;
+    $totalPax   = 0;
     $roomTotal  = 0;
 
     foreach ($request->rooms as $room) {
-        $adults = $room['adults'] ?? 0;
-        $childWithBed = $room['child_with_bed'] ?? 0;
+        $adults        = $room['adults'] ?? 0;
+        $childWithBed  = $room['child_with_bed'] ?? 0;
 
+        // pax calculation
+        $totalPax += ($adults + $childWithBed);
         $adultCount += $adults;
 
         $roomTotal += (($adults + $childWithBed) * $perPersonPrice) + $hotelPrice;
@@ -68,19 +74,37 @@ class PackageCalculatorController extends Controller
 
     $totalPrice = $subtotal + $markupAmount + $gstAmount;
 
+    $uniqueNo = 'QT-' . now()->format('Ymd') . '-' . strtoupper(Str::random(6));
+    $calculation = TourCalculation::create([
+        'unique_no'         => $uniqueNo,
+        'agent_id'           => auth()->check() ? auth()->id() : null,
+        'destination_id'     => $request->destination_id,
+        'theme_id'           => $request->theme_id,
+        'package_id'         => $package->id,
+        'hotel_category_id'  => $hotel->id,
+        'travel_date'        => $request->travel_date,
+        'rooms'              => $request->rooms, // JSON
+        'total_pax'          => $totalPax,
+        'vehicle_id'         => $vehicle->id,
+        'markup'             => $markupPercent,
+        'gst_applied'        => $request->has('add_gst'),
+        'total_price'        => $totalPrice,
+    ]);
+
+    // 🔑 SESSION FOR PDF (UNCHANGED)
     $token = Str::uuid()->toString();
 
-    // ✅ FIX: IDs stored in session
     session([
         "quotation_$token" => [
-            'package_id'        => $package->id,
-            'hotel_category_id' => $hotel->id,
-            'vehicle_id'        => $vehicle->id,
-            'perPersonPrice' => $perPersonPrice,
-            'adultCount'     => $adultCount,
-            'markupPercent'  => $markupPercent,
-            'gstApplied'     => $request->has('add_gst'),
-            'totalPrice'     => $totalPrice,
+            'calculation_id'   => $calculation->id,
+            'package_id'       => $package->id,
+            'hotel_category_id'=> $hotel->id,
+            'vehicle_id'       => $vehicle->id,
+            'perPersonPrice'   => $perPersonPrice,
+            'adultCount'       => $adultCount,
+            'markupPercent'    => $markupPercent,
+            'gstApplied'       => $request->has('add_gst'),
+            'totalPrice'       => $totalPrice,
         ]
     ]);
 
@@ -89,6 +113,7 @@ class PackageCalculatorController extends Controller
         'pdfToken'   => $token,
     ]);
 }
+
 
    public function viewPdf($token)
 {

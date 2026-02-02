@@ -26,8 +26,8 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $user->name }}</td>
-                        <td>{{ $user->mobile }}</td>
                         <td>{{ $user->email }}</td>
+                        <td>{{ $user->mobile }}</td>                     
 
                         <td>
                             <span class="badge {{ $user->status ? 'bg-success' : 'bg-danger' }}">
@@ -35,8 +35,7 @@
                             </span>
                         </td>
                         <td>{{ $user->created_at->diffForHumans() }}</td>
-
-                        <td>
+                        <td class="d-flex gap-2">
                            <a href="{{ route('users.edit', $user) }}" class="btn btn-warning btn-sm">Edit</a>
 
                            <a href="{{ route('users.show', $user) }}" class="btn btn-warning btn-sm">View</a>

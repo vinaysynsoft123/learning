@@ -6,38 +6,41 @@
             <h1 class="text-center display-6 fw-bold mb-5">
                 Tour Package Price Calculator
             </h1>
-
             <div class="form-card">
                 <form action="{{ route('calculator.calculate') }}" method="POST">
                     @csrf
+                   <div class="mb-4">
+                    <label class="form-label">Destinations</label>
+                    <select class="form-select @error('destination_id') is-invalid @enderror" id="destination" name="destination_id">
+                        <option selected disabled>Select Destination</option>
+                        @foreach ($destinations as $destination)
+                            <option value="{{ $destination->id }}" {{ old('destination_id') == $destination->id ? 'selected' : '' }}>
+                                {{ $destination->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('destination_id')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
 
-                    <!-- Theme -->
                     <div class="mb-4">
                         <label class="form-label">Theme</label>
-                        <select class="form-select" name="theme_id">
-                            <option selected disabled>Select Theme</option>
-                            @foreach ($themes as $theme)
-                                <option value="{{ $theme->id }}">{{ $theme->name }}</option>
-                            @endforeach
+                        <select class="form-select" id="theme" name="theme_id" disabled>
+                            <option>Select Theme</option>
                         </select>
-
                     </div>
 
                     <!-- Package -->
                     <div class="mb-4">
                         <label class="form-label">Package</label>
-                        <select class="form-select" name="package_id">
-                            <option selected disabled>Select Package</option>
-                            @foreach ($packages as $package)
-                                <option value="{{ $package->id }}">
-                                    {{ $package->name }} ({{ $package->days }}D/{{ $package->nights }}N)
-                                </option>
-                            @endforeach
+                        <select class="form-select" id="package" name="package_id" disabled>
+                            <option>Select Package</option>
                         </select>
-
                     </div>
 
-                    <!-- Hotel Category -->
                     <div class="mb-4">
                         <label class="form-label">Hotel Category</label>
                         <select class="form-select" name="hotel_category_id">
@@ -46,25 +49,20 @@
                                 <option value="{{ $hotel->id }}">{{ $hotel->name }}</option>
                             @endforeach
                         </select>
-
                     </div>
 
-                    <!-- Travel Date -->
                     <div class="mb-4">
                         <label class="form-label">Travel Date</label>
                         <div class="note-text">Rates & availability depend on this</div>
                         <div class="date-group mt-2">
                             <input type="date" name="travel_date" class="form-control" placeholder="dd-mm-yyyy" />
-                            <i class="fas fa-calendar-alt calendar-icon"></i>
                         </div>
-                        <!-- Hidden date input for actual value -->
-                        <input type="date" name="travel_date" class="d-none" />
+
                     </div>
 
                     <!-- Rooms & Occupancy -->
                     <div class="mb-5">
                         <h5 class="fw-semibold mb-4">Rooms & Occupancy</h5>
-
                         <div id="rooms-container">
                             <div class="room-box">
                                 <button type="button" class="remove-btn" onclick="removeRoom(this)" style="display: none">
@@ -119,14 +117,15 @@
                     <!-- Vehicle -->
                     <div class="mb-4">
                         <label class="form-label">Vehicle</label>
-                        <select class="form-select" name="vehicle_id">
+                        <select class="form-select" id="vehicle" name="vehicle_id">
                             <option selected disabled>Select Vehicle</option>
                             @foreach ($vehicles as $vehicle)
-                                <option value="{{ $vehicle->id }}">
+                                <option value="{{ $vehicle->id }}" data-capacity="{{ $vehicle->capacity }}">
                                     {{ $vehicle->name }} ({{ $vehicle->capacity }} pax)
                                 </option>
                             @endforeach
                         </select>
+
 
                     </div>
 
@@ -198,5 +197,109 @@
 
             </div>
         </div>
+        <script>
+            document.getElementById('destination').addEventListener('change', function() {
+                fetch(`/ajax/themes/${this.value}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        const theme = document.getElementById('theme');
+                        theme.innerHTML = '<option>Select Theme</option>';
+                        theme.disabled = false;
 
+                        data.forEach(item => {
+                            theme.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+                        });
+
+                        resetSelect('package');
+                    });
+            });
+
+            document.getElementById('theme').addEventListener('change', function() {
+                fetch(`/ajax/packages/${this.value}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        const pkg = document.getElementById('package');
+                        pkg.innerHTML = '<option>Select Package</option>';
+                        pkg.disabled = false;
+
+                        data.forEach(item => {
+                            pkg.innerHTML += `
+                    <option value="${item.id}">
+                        ${item.name} (${item.days}D/${item.nights}N)
+                    </option>`;
+                        });
+                    });
+            });
+
+            function resetSelect(id) {
+                const el = document.getElementById(id);
+                el.innerHTML = '<option>Select</option>';
+                el.disabled = true;
+            }
+        </script>
+        <script>
+            document.addEventListener('change', function(e) {
+                if (e.target.name && e.target.name.startsWith('rooms')) {
+                    filterVehiclesByPax();
+                }
+            });
+        </script>
+
+        <script>
+            function filterVehiclesByPax() {
+                const pax = calculateTotalPax();
+                const vehicleSelect = document.getElementById('vehicle');
+
+                let minCapacity = 4;
+
+                if (pax <= 4) {
+                    minCapacity = 4;
+                } else if (pax <= 7) {
+                    minCapacity = 6;
+                } else {
+                    minCapacity = 12;
+                }
+
+                let hasOption = false;
+
+                Array.from(vehicleSelect.options).forEach(option => {
+                    const capacity = parseInt(option.dataset.capacity || 0);
+
+                    // Skip placeholder
+                    if (!capacity) return;
+
+                    if (capacity >= minCapacity) {
+                        option.hidden = false;
+                        hasOption = true;
+                    } else {
+                        option.hidden = true;
+                    }
+                });
+
+                vehicleSelect.disabled = !hasOption;
+
+                // Reset selection if current is invalid
+                if (
+                    vehicleSelect.selectedOptions.length &&
+                    vehicleSelect.selectedOptions[0].hidden
+                ) {
+                    vehicleSelect.value = '';
+                }
+            }
+
+            function calculateTotalPax() {
+                let total = 0;
+
+                document.querySelectorAll('[name^="rooms"]').forEach(el => {
+                    if (
+                        el.name.includes('[adults]') ||
+                        el.name.includes('[child_with_bed]')
+                    ) {
+                        total += parseInt(el.value || 0);
+                    }
+                });
+
+                return total;
+            }
+        </script>
     @endsection

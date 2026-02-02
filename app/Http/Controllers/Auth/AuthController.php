@@ -19,6 +19,11 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
+  public function agent_login()
+    {
+        return view('auth.agent_login');
+    }
+
 
  public function login(Request $request)
 {
@@ -110,7 +115,7 @@ class AuthController extends Controller
 
     public function user_list()
     {
-        $users = User::active()->get();
+        $users = User::where('role','!=','Admin')->active()->get();
         return view('users.index', compact('users'));
     }
 

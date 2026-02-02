@@ -46,4 +46,10 @@ class Package extends Model
     {
         return $query->where('status', 1);
     }
+
+        public function hotelCategory()
+    {
+        return $this->hasMany(HotelCategory::class);
+    }
+
 }

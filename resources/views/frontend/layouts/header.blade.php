@@ -8,18 +8,13 @@
             <!-- NAV -->
             <ul class="nav align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" href="/package-calculator">Calculator</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About Us</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Destinations</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
-                </li>              
-
+               
+              
                 @auth
                     @if (auth()->user()->role === 'Agent')
                         <li class="nav-item dropdown ms-3">
@@ -31,6 +26,11 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('agent.dashboard') }}">
                                         Dashboard
+                                    </a>
+                                </li>
+                                 <li>
+                                    <a class="dropdown-item" href="{{ route('agent.dashboard') }}">
+                                        Profile 
                                     </a>
                                 </li>
                                 <li>

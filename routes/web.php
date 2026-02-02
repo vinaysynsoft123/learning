@@ -12,6 +12,8 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\Admin\PackageCalculationController;
+use App\Http\Controllers\Ajax\CalculatorAjaxController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login',    [AuthController::class, 'showLogin'])->name('login');
@@ -32,31 +34,34 @@ Route::middleware('auth')->group(function () {
     Route::patch('/admin/profile', [SettingsController::class, 'update_profile'])->name('admin.profile.update');
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
     Route::patch('/settings', [SettingsController::class, 'update'])->name('settings.update');
-    Route::resource('destinations', DestinationController::class)
-        ->except(['show']);
+    Route::resource('destinations', DestinationController::class)->except(['show']);
         
     Route::resource('packages', PackageController::class);
-
-    Route::resource('themes', ThemeController::class)
-        ->except(['show']);
-
-    Route::resource('hotel-categories', HotelCategoryController::class)
-        ->except(['show']);
-        Route::resource('vehicles', VehicleController::class)
-        ->except(['show']);
-
+    Route::resource('themes', ThemeController::class)->except(['show']);
+    Route::resource('hotel-categories', HotelCategoryController::class)->except(['show']);
+    Route::resource('vehicles', VehicleController::class)->except(['show']);
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
+    Route::get('/package-calculations', [PackageCalculationController::class,'index'])->name('admin.package.calculations');
+    Route::get('/package-calculations/{id}', [ PackageCalculationController::class,'show'])->name('admin.package.calculations.show');
+
 });
 
-Route::middleware(['auth','agent'])->group(function() {
-    Route::get('/agent/dashboard', [AgentController::class, 'dashboard'])->name('agent.dashboard');
-    Route::post('/agent/logout', [AgentController::class, 'logout'])->name('agent.logout');
+    Route::middleware(['auth','agent'])->group(function() {
+        Route::get('/agent/dashboard', [AgentController::class, 'dashboard'])->name('agent.dashboard');
+        Route::post('/agent/logout', [AgentController::class, 'logout'])->name('agent.logout');
+        Route::get('/calculation/report', [AgentController::class, 'calculation_report'])->name('calculation.report');
+
+    });
+
+Route::prefix('ajax')->group(function () {
+    Route::get('themes/{destination}', [CalculatorAjaxController::class, 'themes']);
+    Route::get('packages/{theme}', [CalculatorAjaxController::class, 'packages']);
 });
 
 
-Route::get('/', [PackageCalculatorController::class, 'index'])
-    ->name('package.calculator');
+Route::get('/', [AuthController::class, 'agent_login'])
+    ->name('apgent.login');
 
 Route::get('/package-calculator', [PackageCalculatorController::class, 'index'])
     ->name('package.calculator');
