@@ -25,6 +25,7 @@ class User extends Authenticatable
         'mobile',
         'status',
         'is_verify',
+        'last_login',
     ];
 
     /**
@@ -44,7 +45,9 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'last_login'        => 'datetime',
     ];
+
 
         public function scopeActive($query)
     {

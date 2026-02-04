@@ -42,7 +42,7 @@ class UsersController extends Controller
             'is_verify' => $request->has('is_verify') ? 1 : 0,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User created');
+        return redirect()->route('users')->with('success', 'User created');
     }
 
     // 🔹 Edit user (IMPORTANT)

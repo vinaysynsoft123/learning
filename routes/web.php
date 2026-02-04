@@ -29,6 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/{user}/edit', [AuthController::class, 'edit'])->name('users.edit');
     Route::get('/users/{user}', [UsersController::class, 'show'])->name('users.show');
     Route::put('/users/{user}', [AuthController::class, 'update'])->name('users.update');
+    Route::get('/user/create', [UsersController::class, 'create'])->name('users.create');
+    Route::post('/user/save', [UsersController::class, 'store'])->name('users.save');
 
     Route::get('/admin/profile', [AuthController::class, 'edit'])->name('admin.profile');
     Route::patch('/admin/profile', [SettingsController::class, 'update_profile'])->name('admin.profile.update');

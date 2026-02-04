@@ -10,6 +10,9 @@ use App\Models\User;
 use App\Models\Room;
 use App\Models\Booking;
 use App\Services\DashboardService;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegisterAgent;
+
 
 class AuthController extends Controller
 {
@@ -27,7 +30,7 @@ class AuthController extends Controller
 
  public function login(Request $request)
 {
-    // 🔹 Validate inputs
+   
     $request->validate([
         'email'    => 'required|email',
         'password' => 'required',
@@ -36,16 +39,15 @@ class AuthController extends Controller
     $credentials = $request->only('email', 'password');
 
     if (Auth::attempt($credentials)) {
-        // Regenerate session
+      
         $request->session()->regenerate();
 
         $user = auth()->user();
-
-        // 🔹 Role-based redirect
+       
         if ($user->role === 'Admin') {
             return redirect()->route('dashboard')
                 ->with('success', 'Welcome back, ' . $user->name . '!');
-        } elseif ($user->role === 'Agent') {
+        } elseif (in_array($user->role, ['Agent', 'Staff', 'Freelancer'])) {
             return redirect()->route('agent.dashboard')
                 ->with('success', 'Welcome back, ' . $user->name . '!');
         } else {
@@ -73,24 +75,25 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name'                  => 'required|string|max:255',
-            'email'                 => 'required|string|email|max:255|unique:users',
-            'password'              => 'required|string|min:8|confirmed',
+            'name'       => 'required|string|max:255',
+            'email'      => 'required|string|email|max:255|unique:users',
+            'password'   => 'required|string|min:8|confirmed',
+            'mobile'   => 'required|digits:10|regex:/^[6-9]\d{9}$/|unique:users,mobile',
         ]);
 
         $user = User::create([
             'name'      => $request->name,
             'email'     => $request->email,
-            'mobile'    => '',     
+            'mobile'    => $request->mobile, 
             'role'      => 'Agent',              
             'status'    => 1,                   
             'is_verify' => 0,                    
             'password'  => Hash::make($request->password),
         ]);
 
-       Auth::login($user);
-        return redirect()->route('login')
-            ->with('success', 'Account created successfully! Welcome, ' . $user->name . '!');
+       Mail::to($user->email)->send(new RegisterAgent($user));
+       return redirect('/')->with('success', 'Register successfully');
+        
     }
 
 

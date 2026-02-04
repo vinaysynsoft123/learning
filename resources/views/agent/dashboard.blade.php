@@ -11,7 +11,7 @@
                     <button class="btn btn-outline-danger">Logout</button>
                 </form>
             </div>
-             <p class="text-muted">Last Login {{ $user->last_login }}</p>
+            <p class="text-muted">Last Login {{ $user->last_login }}</p>
             <p class="text-muted">This is your dashboard.</p>
         </div>
 

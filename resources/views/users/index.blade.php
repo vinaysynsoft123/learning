@@ -4,7 +4,7 @@
     <div class="container">
         <div class="d-flex justify-content-between mb-3">
             <h4> Users </h4>
-            <a href="" class="btn btn-primary mb-3">
+            <a href="{{ route('users.create')}}" class="btn btn-primary mb-3">
                 <i class="bi bi-plus"></i> Add Users
             </a>
         </div>

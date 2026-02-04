@@ -10,10 +10,10 @@ class RedirectIfNotAgent
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role === 'Agent') {
+        if (Auth::check() && in_array(Auth::user()->role, ['Agent', 'Staff', 'Freelancer'])) {
             return $next($request);
         }
 
-        return redirect('/login')->with('error', 'You must be an agent to access this page.');
+        return redirect('/login')->with('error', 'You must be an agent, staff member, or freelancer to access this page.');
     }
 }
