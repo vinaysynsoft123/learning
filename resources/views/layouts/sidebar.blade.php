@@ -6,37 +6,48 @@ a<div class="sidebar" id="sidebar">
             </a>
         </li>
 
-           <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('package_calculator') ? 'active' : '' }}" href="{{ route('admin.package.calculations') }}"><i
-                    class="bi bi-people me-3"></i> Package Calculator</a>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('package_calculator') ? 'active' : '' }}"
+                href="{{ route('admin.package.calculations') }}"><i class="bi bi-people me-3"></i> Package Calculator</a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('destinations') ? 'active' : '' }}" href="{{ route('destinations.index') }}">
+            <a class="nav-link {{ request()->routeIs('destinations') ? 'active' : '' }}"
+                href="{{ route('destinations.index') }}">
                 <i class="bi bi-calendar3 me-3"></i> Destinations
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('#') ? 'active' : '' }}" href="{{ route('themes.index')}}">
+            <a class="nav-link {{ request()->routeIs('#') ? 'active' : '' }}" href="{{ route('themes.index') }}">
                 <i class="bi bi-building me-3"></i> Themes
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('#') ? 'active' : '' }}" href="{{ route('hotel-categories.index')}}">
+            <a class="nav-link {{ request()->routeIs('#') ? 'active' : '' }}"
+                href="{{ route('hotel-categories.index') }}">
                 <i class="bi bi-building me-3"></i> Room Management
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('#') ? 'active' : '' }}" href="{{ route('packages.index')}}">
+            <a class="nav-link {{ request()->routeIs('hotels.index') ? 'active' : '' }}"
+                href="{{ route('hotels.index') }}">
+                <i class="bi bi-building me-3"></i> Hotels
+            </a>
+        </li>
+
+
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('#') ? 'active' : '' }}" href="{{ route('packages.index') }}">
                 <i class="bi bi-building me-3"></i> Packages
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('vehicles') ? 'active' : '' }}" href="{{ route('vehicles.index')}}"><i
-                    class="bi bi-people me-3"></i> Vehicles</a>
+            <a class="nav-link {{ request()->routeIs('vehicles') ? 'active' : '' }}"
+                href="{{ route('vehicles.index') }}"><i class="bi bi-people me-3"></i> Vehicles</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('reports') ? 'active' : '' }}" href="{{ route('reports.index')}}">
+            <a class="nav-link {{ request()->routeIs('reports') ? 'active' : '' }}"
+                href="{{ route('reports.index') }}">
                 <i class="bi bi-graph-up me-3"></i> Reports
             </a>
 

@@ -37,15 +37,15 @@
                         <td>{{ $user->created_at->diffForHumans() }}</td>
                         <td class="d-flex gap-2">
                            <a href="{{ route('users.edit', $user) }}" class="btn btn-warning btn-sm">Edit</a>
-
                            <a href="{{ route('users.show', $user) }}" class="btn btn-warning btn-sm">View</a>
-
-                            <form action="#" method="POST" class="d-inline">
+                            <form action="{{ route('users.destroy', $user) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button onclick="return confirm('Delete this user?')" class="btn btn-danger btn-sm">
-                                    Delete
-                                </button>
+                                <button 
+                            onclick="return confirm('WARNING: This action will permanently delete this user and ALL associated data from the database. This cannot be undone. Do you want to proceed?')"
+                            class="btn btn-danger btn-sm">
+                            Delete
+                        </button>
                             </form>
                         </td>
                     </tr>

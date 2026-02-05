@@ -11,7 +11,7 @@ class PackageController extends Controller
 {
     public function index()
     {
-        $packages = Package::with(['theme.destination'])->latest()->get();
+        $packages = Package::with(['theme.destination'])->latest()->paginate(20); 
         return view('packages.index', compact('packages'));
     }
 

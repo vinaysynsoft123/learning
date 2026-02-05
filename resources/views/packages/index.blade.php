@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <div class="d-flex justify-content-between mb-3">
+        <div class="d-flex justify-content-between">
             <h4>Packages </h4>
             <a href="{{ route('packages.create') }}" class="btn btn-primary mb-3">
                 <i class="bi bi-plus"></i> Add Package
@@ -50,6 +50,9 @@
                 @endforeach
             </tbody>
         </table>
-
+   <!-- Pagination -->
+    <div class="d-flex justify-content-end custom-pagination">
+        {{ $packages->withQueryString()->links('pagination::bootstrap-5') }}
+    </div>
     </div>
 @endsection

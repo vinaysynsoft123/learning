@@ -8,7 +8,6 @@ use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\HotelCategoryController;
 use App\Http\Controllers\HotelController;
-use App\Http\Controllers\HotelRoomTypeController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ReportController;
@@ -25,7 +24,6 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
     Route::post('/logout',   [AuthController::class, 'logout'])->name('logout');
     Route::get('/users',[AuthController::class, 'user_list'])->name('users');
@@ -36,10 +34,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/user/save', [UsersController::class, 'store'])->name('users.save');
     Route::delete('/users/{user}', [UsersController::class, 'destroy'])->name('users.destroy');
 
+    Route::get('/admin/profile', [AuthController::class, 'edit'])->name('admin.profile');
     Route::patch('/admin/profile', [SettingsController::class, 'update_profile'])->name('admin.profile.update');
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
     Route::patch('/settings', [SettingsController::class, 'update'])->name('settings.update');
-    Route::get('/admin/profile', [SettingsController::class, 'edit'])->name('admin.profile');
     Route::resource('destinations', DestinationController::class)->except(['show']);
         
     Route::resource('packages', PackageController::class);
@@ -51,10 +49,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/package-calculations', [PackageCalculationController::class,'index'])->name('admin.package.calculations');
     Route::get('/package-calculations/{id}', [ PackageCalculationController::class,'show'])->name('admin.package.calculations.show');
-
-    Route::get('/hotel-rooms/{hotel}', [HotelRoomTypeController::class, 'index'])->name('rooms.index');
-    Route::get('hotel/{hotel}/rooms/create', [HotelRoomTypeController::class, 'create'])->name('hotel.rooms.create');
-    Route::post('hotel/{hotel}/rooms/store', [HotelRoomTypeController::class, 'store'])->name('hotel.rooms.store');
 
 });
 

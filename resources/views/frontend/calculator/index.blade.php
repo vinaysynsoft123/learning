@@ -9,22 +9,24 @@
             <div class="form-card">
                 <form action="{{ route('calculator.calculate') }}" method="POST">
                     @csrf
-                   <div class="mb-4">
-                    <label class="form-label">Destinations</label>
-                    <select class="form-select @error('destination_id') is-invalid @enderror" id="destination" name="destination_id">
-                        <option selected disabled>Select Destination</option>
-                        @foreach ($destinations as $destination)
-                            <option value="{{ $destination->id }}" {{ old('destination_id') == $destination->id ? 'selected' : '' }}>
-                                {{ $destination->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('destination_id')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
+                    <div class="mb-4">
+                        <label class="form-label">Destinations</label>
+                        <select class="form-select @error('destination_id') is-invalid @enderror" id="destination"
+                            name="destination_id">
+                            <option selected disabled>Select Destination</option>
+                            @foreach ($destinations as $destination)
+                                <option value="{{ $destination->id }}"
+                                    {{ old('destination_id') == $destination->id ? 'selected' : '' }}>
+                                    {{ $destination->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('destination_id')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
 
                     <div class="mb-4">
                         <label class="form-label">Theme</label>
@@ -128,24 +130,24 @@
 
 
                     </div>
-
-                    <!-- Markup & GST -->
-                    <div class="row align-items-end mb-5">
-                        <div class="col-md-6 mb-4 mb-md-0">
-                            <label class="form-label">Add Markup (percentage)</label>
-                            <div class="input-group markup-group">
-                                <input type="number" class="form-control" value="0" min="0" name="markup" />
-                                <span class="input-group-text">%</span>
+                    @if ($isAgent)
+                        <div class="row align-items-end mb-5">
+                            <div class="col-md-6 mb-4 mb-md-0">
+                                <label class="form-label">Add Markup (percentage)</label>
+                                <div class="input-group markup-group">
+                                    <input type="number" class="form-control" value="0" min="0"
+                                        name="markup" />
+                                    <span class="input-group-text">%</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="add_gst" name="add_gst" />
+                                    <label class="form-check-label fw-medium" for="add_gst">Add GST (5%)</label>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="add_gst" name="add_gst" />
-                                <label class="form-check-label fw-medium" for="add_gst">Add GST (5%)</label>
-                            </div>
-                        </div>
-                    </div>
-
+                    @endif
                     <!-- Calculate -->
                     <div class="text-center">
                         <button type="submit" class="btn calculate-btn">

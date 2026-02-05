@@ -30,27 +30,27 @@ class TourCalculation extends Model
 
     public function agent()
 {
-    return $this->belongsTo(\App\Models\User::class, 'agent_id');
+    return $this->belongsTo(User::class, 'agent_id');
 }
 
 public function destination()
 {
-    return $this->belongsTo(\App\Models\Destination::class);
+    return $this->belongsTo(Destination::class);
 }
 
 public function package()
 {
-    return $this->belongsTo(\App\Models\Package::class);
+    return $this->belongsTo(Package::class);
 }
 
 public function hotelCategory()
 {
-    return $this->belongsTo(\App\Models\HotelCategory::class);
+    return $this->belongsTo(HotelCategory::class);
 }
 
 public function vehicle()
 {
-    return $this->belongsTo(\App\Models\Vehicle::class);
+    return $this->belongsTo(Vehicle::class);
 }
 
 }

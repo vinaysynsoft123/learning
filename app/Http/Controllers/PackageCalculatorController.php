@@ -11,21 +11,21 @@ use App\Models\Vehicle;
 use App\Models\TourCalculation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Auth;
 use PDF;
 
 class PackageCalculatorController extends Controller
 {
     public function index()
     {
-        return view('frontend.calculator.index', [
-            
+        return view('frontend.calculator.index', [            
             'states'          => State::where('status', 1)->get(),
             'destinations'    => Destination::where('status', 1)->get(),
             'themes'          => Theme::where('status', 1)->get(),
             'packages'        => Package::where('status', 1)->get(),
             'hotelCategories' => HotelCategory::where('status', 1)->get(),
             'vehicles'        => Vehicle::where('status', 1)->get(),
+            'isAgent'         => auth()->user()?->role === 'Agent'
         ]);
     }
 
@@ -116,21 +116,21 @@ public function calculate(Request $request)
 
 
    public function viewPdf($token)
-{
-    $data = session("quotation_$token");
-    abort_if(!$data, 404);
+    {
+        $data = session("quotation_$token");
+        abort_if(!$data, 404);
 
-    $package = Package::findOrFail($data['package_id']);
-    $hotel   = HotelCategory::findOrFail($data['hotel_category_id']);
-    $vehicle = Vehicle::findOrFail($data['vehicle_id']);
+        $package = Package::findOrFail($data['package_id']);
+        $hotel   = HotelCategory::findOrFail($data['hotel_category_id']);
+        $vehicle = Vehicle::findOrFail($data['vehicle_id']);
 
-    $pdf = PDF::loadView('frontend.calculator.pdf', array_merge($data, [
-        'package' => $package,
-        'hotel'   => $hotel,
-        'vehicle' => $vehicle,
-    ]));
+        $pdf = PDF::loadView('frontend.calculator.pdf', array_merge($data, [
+            'package' => $package,
+            'hotel'   => $hotel,
+            'vehicle' => $vehicle,
+        ]));
 
-    return $pdf->stream('tour-quotation.pdf');
-}
+        return $pdf->stream('tour-quotation.pdf');
+    }
 
 }

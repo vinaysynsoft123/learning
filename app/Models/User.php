@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -55,8 +56,14 @@ class User extends Authenticatable
     }
 
     public function company()
-{
-    return $this->hasOne(UserCompany::class);
-}
+    {
+        return $this->hasOne(UserCompany::class);
+    }
+
+  public function tourCalculations(): HasMany
+    {
+        return $this->hasMany(TourCalculation::class, 'agent_id');
+    }
+
 
 }

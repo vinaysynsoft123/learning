@@ -57,8 +57,7 @@
                                     onchange="previewLogo(event)">
                                 <small class="text-muted d-block mt-2">Recommended: 200x100px PNG/JPG/WEBP</small>
                             </div>
-                        </div>
-                   
+                        </div>                   
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary px-5">
                                 Save Changes

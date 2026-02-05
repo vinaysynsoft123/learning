@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
@@ -31,11 +32,13 @@ class UsersController extends Controller
             'password' => 'required|min:8|confirmed',
             'role'     => 'required',
             'status'   => 'required|in:0,1',
+            'mobile'   => 'nullable|string|max:15',
         ]);
 
         User::create([
             'name'      => $request->name,
             'email'     => $request->email,
+            'mobile'    => $request->mobile,
             'password'  => Hash::make($request->password),
             'role'      => $request->role,
             'status'    => $request->status,
@@ -85,15 +88,22 @@ class UsersController extends Controller
     // 🔹 Delete user
     public function destroy(User $user)
     {
-        $user->delete();
-        return redirect()->route('users.index')->with('success', 'User deleted');
+        $auth_user = Auth::user();
+        if ($auth_user->role == "Admin") {
+           $user->tourCalculations()->delete();
+           $user->company()->delete();
+           $user->delete();
+            return redirect()->route('users')->with('success', 'User deleted');
+        }
+        
+        return redirect()->route('users.index')->with('error', 'Unauthorized');
     }
 
-public function show(User $user)
-{
-    $user->load('company');
-    return view('users.show', compact('user'));
-}
+    public function show(User $user)
+    {
+        $user->load('company');
+        return view('users.show', compact('user'));
+    }
 
-
+   
 }
