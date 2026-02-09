@@ -64,3 +64,5 @@
 
     </div>
 @endsection
+
+//mujhe hotel nhi destiona decide krna hai ki day me staty kaha hoga aur day 2 me kaha 

@@ -33,4 +33,9 @@ class Theme extends Model
     {
         return $query->where('status', 1);
     }
+
+    public function hotels()
+    {
+        return $this->belongsToMany(Hotel::class);
+    }
 }

@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('themes', ThemeController::class)->except(['show']);
     Route::resource('hotel-categories', HotelCategoryController::class)->except(['show']);
     Route::resource('hotels', HotelController::class);
+    
     Route::resource('vehicles', VehicleController::class)->except(['show']);
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
@@ -82,4 +83,4 @@ Route::post('/calculator/calculate', [PackageCalculatorController::class, 'calcu
     ->name('calculator.calculate');
 
 Route::get('/calculator/pdf/{token}', [PackageCalculatorController::class, 'viewPdf'])
-    ->name('calculator.pdf');
+    ->name('calculator.pdf'); //

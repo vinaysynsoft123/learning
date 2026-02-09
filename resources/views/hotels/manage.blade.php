@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+
         <div class="row col-md-8">
             <h3>{{ isset($hotel) ? 'Edit Hotel ' : 'Add Hotel ' }}</h3>
 
@@ -21,6 +22,28 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="mb-3">
+                    <label> Hotel Destination</label>
+                    <select name="destination_id" class="form-select">
+                        @foreach ($destinations as $destination)
+                            <option value="{{ $destination->id }}" @selected(old('destination_id', $hotel->destination_id ?? '') == $destination->id)>
+                                {{ $destination->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label> Themes</label>
+                    <select name="theme_ids[]" class="form-select" multiple>
+                        @foreach ($themes as $theme)
+                            <option value="{{ $theme->id }}" @selected(in_array($theme->id, old('theme_ids', isset($hotel) ? $hotel->themes->pluck('id')->toArray() : [])))>
+                                {{ $theme->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
                 <input type="hidden" name="state" value="1">
                 <div class="mb-3">
                     <label> Name</label>
@@ -28,11 +51,8 @@
                         required>
                 </div>
 
-                <div class="mb-3">
-                    <label> City</label>
-                    <input type="text" name="city" class="form-control" value="{{ old('name', $hotel->city ?? '') }}"
-                        required>
-                </div>
+                <input type="text" name="city" value="{{ old('city', $hotel->city ?? '') }}" class="form-control"
+                    required>
 
                 <div class="mb-3">
                     <label>Status</label>

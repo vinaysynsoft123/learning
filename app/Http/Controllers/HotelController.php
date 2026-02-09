@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hotel;
+use App\Models\Theme;
+use App\Models\Destination;
 use App\Models\HotelCategory;
 use Illuminate\Http\Request;
 
@@ -44,11 +46,14 @@ class HotelController extends Controller
 
     public function create()
     {
+        
         $categories = HotelCategory::all();
-        return view('hotels.manage', compact('categories'));
+        $themes = Theme::active()->get();
+        $destinations = Destination::active()->get();
+        return view('hotels.manage', compact('categories', 'themes', 'destinations'));
     }
 
-    public function store(Request $request)
+ public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -56,11 +61,20 @@ class HotelController extends Controller
             'state' => 'required|max:255',
             'hotel_category_id' => 'required|exists:hotel_categories,id',
             'status' => 'required|in:0,1',
+            'theme_ids' => 'required|array',
+            'theme_ids.*' => 'exists:themes,id',
+            'destination_id' => 'required|exists:destinations,id',
         ]);
 
-        Hotel::create($request->only(['name','city','state','hotel_category_id','status']));
+        // Create hotel once
+        $hotel = Hotel::create($request->except('theme_ids'));
 
-        return redirect()->route('hotels.index')->with('success', 'Hotel created Successfully');
+        // Attach multiple themes
+        $hotel->themes()->sync($request->theme_ids);
+
+        return redirect()
+            ->route('hotels.index')
+            ->with('success', 'Hotel created successfully');
     }
 
     public function show(Hotel $hotel)
@@ -69,13 +83,21 @@ class HotelController extends Controller
         return view('hotels.show', compact('hotel'));
     }
 
-    public function edit(Hotel $hotel)
+  public function edit(Hotel $hotel)
     {
+        $hotel->load('themes'); 
+
         $categories = HotelCategory::all();
-        return view('hotels.manage', compact('hotel','categories'));
+        $themes = Theme::active()->get();
+        $destinations = Destination::active()->get();
+
+        return view('hotels.manage', compact(
+            'hotel','categories','themes','destinations'
+        ));
     }
 
-    public function update(Request $request, Hotel $hotel)
+
+   public function update(Request $request, Hotel $hotel)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -83,12 +105,22 @@ class HotelController extends Controller
             'state' => 'required|max:255',
             'hotel_category_id' => 'required|exists:hotel_categories,id',
             'status' => 'required|in:0,1',
+            'theme_ids' => 'required|array',
+            'theme_ids.*' => 'exists:themes,id',
+            'destination_id' => 'required|exists:destinations,id',
         ]);
 
-        $hotel->update($request->only(['name','city','state','hotel_category_id','status']));
+        // Update hotel fields
+        $hotel->update($request->except('theme_ids'));
 
-        return redirect()->route('hotels.index')->with('success', 'Hotel updated');
+        // Sync multiple themes
+        $hotel->themes()->sync($request->theme_ids);
+
+        return redirect()
+            ->route('hotels.index')
+            ->with('success', 'Hotel updated successfully');
     }
+
 
     public function destroy(Hotel $hotel)
     {

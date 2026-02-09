@@ -12,6 +12,7 @@ class Hotel extends Model
         'city',
         'state',
         'hotel_category_id',
+        'destination_id',
         'status'
     ];
 
@@ -23,6 +24,15 @@ class Hotel extends Model
     public function roomTypes()
     {
         return $this->hasMany(HotelRoomType::class);
+    }
+
+    public function themes()
+    {
+        return $this->belongsToMany(Theme::class);
+    }
+    public function destination()
+    {
+        return $this->belongsTo(Destination::class);
     }
 }
 
