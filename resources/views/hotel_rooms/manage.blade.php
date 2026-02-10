@@ -5,14 +5,12 @@
 
         <h4>{{ $roomType->id ? 'Edit Room Type' : 'Add Room Type' }}</h4>
 
-        <form method="POST"
-            action="{{ $roomType->id ? route('rooms.update', [$hotel->id, $roomType->id]) : route('hotel.rooms.store', $hotel->id) }}">
+        <form method="POST" action="{{ $roomType->id ? route('rooms.update', [$hotel->id, $roomType->id]) : route('hotel.rooms.store', $hotel->id) }}">
 
             @csrf
             @if ($roomType->id)
                 @method('PUT')
             @endif
-
 
             <div class="row">
                 <div class="col-md-4">

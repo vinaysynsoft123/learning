@@ -14,7 +14,9 @@ class Package extends Model
         'currency',
         'status',
         'description',
-        'discount'
+        'discount',
+        'inclusions',
+        'exclusions',
 
     ];
 

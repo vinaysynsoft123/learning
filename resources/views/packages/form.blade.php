@@ -44,6 +44,22 @@
                 <textarea name="description" class="form-control">{{ old('description', $package->description ?? '') }}</textarea>
             </div>
 
+
+        <div class="mb-3">
+            <label>Inclusions</label>
+            <textarea name="inclusions" class="form-control" rows="4">
+                {{ old('inclusions', $package->inclusions ?? '') }}
+            </textarea>
+        </div>
+
+        <div class="mb-3">
+            <label>Exclusions</label>
+            <textarea name="exclusions" class="form-control" rows="4">
+                {{ old('exclusions', $package->exclusions ?? '') }}
+            </textarea>
+        </div>
+
+
             <div class="mb-3">
                 <label>Discount</label>
                 <input type="number" step="0.01" name="discount" class="form-control"
@@ -65,4 +81,3 @@
     </div>
 @endsection
 
-//mujhe hotel nhi destiona decide krna hai ki day me staty kaha hoga aur day 2 me kaha 

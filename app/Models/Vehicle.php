@@ -11,7 +11,8 @@ class Vehicle extends Model
         'capacity',
         'price_per_day',
         'status',
-        'other'
+        'other',
+        'destination_id',
     ];
 
     protected $casts = [

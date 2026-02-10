@@ -38,7 +38,10 @@ class TourCalculationRepository
         if (!empty($filters['travel_date'])) {
             $query->whereDate('travel_date', $filters['travel_date']);
         }
-
+ 
+        if (!empty($filters['unique_no'])) {
+            $query->where('unique_no', 'like', '%' . $filters['unique_no'] . '%');
+        }
         return $query->paginate($perPage)->withQueryString();
     }
 

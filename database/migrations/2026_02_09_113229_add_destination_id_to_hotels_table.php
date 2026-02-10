@@ -7,11 +7,12 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::table('hotels', function (Blueprint $table) {
-            $table->foreignId('destination_id')                  
-                  ->constrained()
-                  ->cascadeOnDelete();
-        });
+       Schema::table('hotels', function (Blueprint $table) {
+    if (!Schema::hasColumn('hotels', 'destination_id')) {
+        $table->unsignedBigInteger('destination_id')->after('id');
+    }
+});
+
     }
 
     public function down(): void

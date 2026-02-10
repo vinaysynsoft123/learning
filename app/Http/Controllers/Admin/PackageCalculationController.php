@@ -20,7 +20,7 @@ class PackageCalculationController extends Controller
 
     public function index(Request $request)
     {
-        $filters = $request->only(['agent_id', 'destination_id', 'package_id', 'travel_date']);
+        $filters = $request->only(['agent_id', 'destination_id', 'package_id', 'travel_date', 'unique_no']);
 
         $calculations = $this->service->listCalculations($filters);
 

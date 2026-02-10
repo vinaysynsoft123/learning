@@ -33,6 +33,8 @@ class PackageController extends Controller
             'status'     => 'required|boolean',
             'discount'    => 'nullable|numeric|min:0',  
             'description' => 'required|string',  
+            'inclusions' => 'nullable|string',
+            'exclusions' => 'nullable|string',
         ]);
 
         Package::create($request->all());
@@ -59,6 +61,8 @@ class PackageController extends Controller
             'status'     => 'required|boolean',
             'discount'    => 'nullable|numeric|min:0',  
             'description' => 'required|string',  
+            'inclusions' => 'nullable|string',
+            'exclusions' => 'nullable|string',
         ]);
 
         $package->update($request->all());

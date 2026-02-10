@@ -7,6 +7,16 @@
 
     <!-- Filters -->
     <form method="GET" class="row mb-4">
+
+        <div class="col-md-3">
+            <label class="form-label">Quotation No</label>
+            <input type="text"
+                name="unique_no"
+                value="{{ request('unique_no') }}"
+                class="form-control"
+                placeholder="Enter Quotation No">
+        </div>
+
         <div class="col-md-3">
             <label class="form-label">Agent</label>
             <select name="agent_id" class="form-select">

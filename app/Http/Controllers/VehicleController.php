@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vehicle;
+use App\Models\Destination;
 use Illuminate\Http\Request;
 
 class VehicleController extends Controller
@@ -15,9 +16,8 @@ class VehicleController extends Controller
 
     public function create()
     {
-        return view('vehicles.manage', [
-            'vehicle' => null
-        ]);
+        $destinations = Destination::where('status', 1)->get();
+        return view('vehicles.manage', compact('destinations'));
     }
 
     public function store(Request $request)
@@ -28,6 +28,7 @@ class VehicleController extends Controller
             'price_per_day' => 'required|numeric|min:0',
             'status'        => 'required|boolean',
             'other'        => 'required',
+            'destination_id' => 'required|exists:destinations,id',
         ]);
 
         Vehicle::create($request->all());
@@ -36,10 +37,13 @@ class VehicleController extends Controller
             ->with('success', 'Vehicle added successfully');
     }
 
-    public function edit(Vehicle $vehicle)
-    {
-        return view('vehicles.manage', compact('vehicle'));
-    }
+  public function edit(Vehicle $vehicle)
+{
+    $destinations = Destination::where('status', 1)->get();
+
+    return view('vehicles.manage', compact('vehicle', 'destinations'));
+}
+
 
     public function update(Request $request, Vehicle $vehicle)
     {
@@ -49,6 +53,7 @@ class VehicleController extends Controller
             'price_per_day' => 'required|numeric|min:0',
             'status'        => 'required|boolean',
             'other'        => 'required',
+            'destination_id' => 'required|exists:destinations,id',
         ]);
 
         $vehicle->update($request->all());

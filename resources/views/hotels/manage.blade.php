@@ -50,9 +50,11 @@
                     <input type="text" name="name" class="form-control" value="{{ old('name', $hotel->name ?? '') }}"
                         required>
                 </div>
-
-                <input type="text" name="city" value="{{ old('city', $hotel->city ?? '') }}" class="form-control"
-                    required>
+                <div class="mb-3">
+                    <label> City</label>
+                    <input type="text" name="city" value="{{ old('city', $hotel->city ?? '') }}" class="form-control"
+                        required>
+                </div>
 
                 <div class="mb-3">
                     <label>Status</label>
