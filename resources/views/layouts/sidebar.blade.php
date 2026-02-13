@@ -53,6 +53,12 @@ a<div class="sidebar" id="sidebar">
 
         </li>
         <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('terms-conditions.*') ? 'active' : '' }}"
+                href="{{ route('terms-conditions.index') }}">
+                <i class="bi bi-file-text me-3"></i> Terms & Conditions
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('settings') ? 'active' : '' }}" href="{{ route('settings') }}"><i
                     class="bi bi-gear me-3"></i> Settings</a>
         </li>

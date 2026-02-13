@@ -27,7 +27,7 @@ class ThemeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'destination_id' => 'required|exists:destinations,id',
+            'destination_id' => 'required',
             'name'           => 'required|string|max:255',
             'status'         => 'required|boolean',
         ]);
@@ -48,7 +48,7 @@ class ThemeController extends Controller
     public function update(Request $request, Theme $theme)
     {
         $request->validate([
-            'destination_id' => 'required|exists:destinations,id',
+            'destination_id' => 'required',
             'name'           => 'required|string|max:255',
             'status'         => 'required|boolean',
         ]);

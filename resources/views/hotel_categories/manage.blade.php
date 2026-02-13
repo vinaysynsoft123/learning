@@ -2,6 +2,8 @@
 
 @section('content')
 <div class="container">
+    <div class="row">
+        <div class="col-md-8">
     <h3>{{ isset($category) ? 'Edit Hotel Category' : 'Add Hotel Category' }}</h3>
 
     <form method="POST"
@@ -18,6 +20,9 @@
             <label>Category Name</label>
             <input type="text" name="name" class="form-control"
                    value="{{ old('name', $category->name ?? '') }}" required>
+                   @error('name')
+                   <span class="text-danger">{{ $message }}</span>
+               @enderror
         </div>
 
         <div class="mb-3">
@@ -36,5 +41,7 @@
             Back
         </a>
     </form>
+</div>
+</div>
 </div>
 @endsection

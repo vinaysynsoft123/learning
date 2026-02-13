@@ -12,9 +12,9 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Sr. No</th>
+                    <th>Sr. No</th>                  
+                    <th>Destionation Name</th>
                     <th>State</th>
-                    <th>Name</th>
                     <th>Status</th>
                     <th width="150">Action</th>
                 </tr>
@@ -23,8 +23,8 @@
                 @foreach ($destinations as $destination)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $destination->state->name ?? '-' }}</td>
                         <td>{{ $destination->name }}</td>
+                        <td>{{ $destination->state->name ?? '-' }}</td>                    
                         <td>
                             <span class="badge {{ $destination->status ? 'bg-success' : 'bg-danger' }}">
                                 {{ $destination->status ? 'Active' : 'Inactive' }}

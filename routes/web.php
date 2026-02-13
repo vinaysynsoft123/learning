@@ -16,6 +16,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\Admin\PackageCalculationController;
 use App\Http\Controllers\Ajax\CalculatorAjaxController;
+use App\Http\Controllers\TermsConditionController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login',    [AuthController::class, 'showLogin'])->name('login');
@@ -48,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('hotels', HotelController::class);
     
     Route::resource('vehicles', VehicleController::class)->except(['show']);
+    Route::resource('terms-conditions', TermsConditionController::class)->except(['show']);
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
     Route::get('/package-calculations', [PackageCalculationController::class,'index'])->name('admin.package.calculations');
@@ -63,6 +65,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/agent/dashboard', [AgentController::class, 'dashboard'])->name('agent.dashboard');
         Route::post('/agent/logout', [AgentController::class, 'logout'])->name('agent.logout');
         Route::get('/calculation/report', [AgentController::class, 'calculation_report'])->name('calculation.report');
+        Route::get('/agent/company-profile', [AgentController::class, 'company_profile'])->name('agent.company.profile');
+        Route::post('/agent/company-profile/update', [AgentController::class, 'update'])->name('agent.company.profile.update');
+        Route::get('/agent/profile', [AgentController::class, 'profile'])->name('agent.profile');
+        Route::get('/agent/my-target', [AgentController::class, 'my_target'])->name('agent.target');
+        Route::get('/calculation/report/{id}', [AgentController::class, 'show'])->name('calculation.show');
 
     });
 

@@ -2,17 +2,25 @@
         background-color: #f4f6f9;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       }
+.header {
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(0,0,0,.05);
+    margin: 0;
+    border-radius: 0; 
+    /*max-width: 1120px !important;*/
+}
 
-      /* Header */
-      .header {
-        background-color: #ffffff;
-        border-radius: 20px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-        padding: 1.5rem;
-        margin: 2rem auto;
-        max-width: 1150px;
-      }
-
+/* inner rounded box */
+.header-inner {
+    
+    margin: 2rem auto;
+    padding: 1.5rem;
+    border-radius: 20px;
+    background: #fff;
+}
+.dropdown-menu {
+    position: absolute;
+}
       .navbar-nav .nav-link {
         color: #333 !important;
         font-weight: 500;
@@ -168,3 +176,16 @@
         color: #00acc1;
         text-decoration: none;
       }
+      .stat-card {
+    border-radius: 12px;
+    transition: 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.card-header {
+    border-bottom: 1px solid #f1f1f1;
+}

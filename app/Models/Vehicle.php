@@ -9,9 +9,10 @@ class Vehicle extends Model
     protected $fillable = [
         'name',
         'capacity',
+        'type',
         'price_per_day',
-        'status',
-        'other',
+        'tour_rates',
+        'status',      
         'destination_id',
     ];
 

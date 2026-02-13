@@ -17,17 +17,21 @@ class VehicleController extends Controller
     public function create()
     {
         $destinations = Destination::where('status', 1)->get();
-        return view('vehicles.manage', compact('destinations'));
+        return view('vehicles.manage', [
+            'vehicle' => null,
+            'destinations' => $destinations
+        ]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name'          => 'required|string|max:255',
-            'capacity'      => 'required|integer|min:1',
-            'price_per_day' => 'required|numeric|min:0',
-            'status'        => 'required|boolean',
-            'other'        => 'required',
+            'name'           => 'required|string|max:255',
+            'capacity'       => 'required|integer|min:1',
+            'type'           => 'required|in:per_day,per_km,tour_basis',
+            'price_per_day'  => 'required_unless:type,tour_basis|nullable|numeric|min:0',
+            'tour_rates'     => 'required_if:type,tour_basis|nullable|string',
+            'status'         => 'required|boolean',
             'destination_id' => 'required|exists:destinations,id',
         ]);
 
@@ -37,22 +41,22 @@ class VehicleController extends Controller
             ->with('success', 'Vehicle added successfully');
     }
 
-  public function edit(Vehicle $vehicle)
-{
-    $destinations = Destination::where('status', 1)->get();
-
-    return view('vehicles.manage', compact('vehicle', 'destinations'));
-}
+    public function edit(Vehicle $vehicle)
+    {
+        $destinations = Destination::active()->get();
+        return view('vehicles.manage', compact('vehicle', 'destinations'));
+    }
 
 
     public function update(Request $request, Vehicle $vehicle)
     {
         $request->validate([
-            'name'          => 'required|string|max:255',
-            'capacity'      => 'required|integer|min:1',
-            'price_per_day' => 'required|numeric|min:0',
-            'status'        => 'required|boolean',
-            'other'        => 'required',
+            'name'           => 'required|string|max:255',
+            'capacity'       => 'required|integer|min:1',
+            'type'           => 'required|in:per_day,per_km,tour_basis',
+            'price_per_day'  => 'required_unless:type,tour_basis|nullable|numeric|min:0',
+            'tour_rates'     => 'required_if:type,tour_basis|nullable|string',
+            'status'         => 'required|boolean',
             'destination_id' => 'required|exists:destinations,id',
         ]);
 

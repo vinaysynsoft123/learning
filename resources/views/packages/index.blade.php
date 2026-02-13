@@ -25,8 +25,8 @@
                 @foreach ($packages as $package)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $package->theme->destination->name ?? '-' }}</td>
-                        <td>{{ $package->theme->name }}</td>
+                        <td>{{ $package->destination->name ?? '-' }}</td>
+                        <td>{{ $package->theme->name ?? '-' }}</td>
                         <td>{{ $package->name }}</td>
                         <td>{{ $package->nights }}</td>
                         <td>{{ $package->base_price }}</td>

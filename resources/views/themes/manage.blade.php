@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
     <h3>{{ isset($theme) ? 'Edit Theme' : 'Add Theme' }}</h3>
 
     <form method="POST"
@@ -14,19 +16,7 @@
             @method('PUT')
         @endif
 
-        <div class="mb-3">
-            <label>Destination</label>
-            <select name="destination_id" class="form-control" required>
-                <option value="">Select Destination</option>
-                @foreach($destinations as $destination)
-                    <option value="{{ $destination->id }}"
-                        @selected(old('destination_id', $theme->destination_id ?? '') == $destination->id)>
-                        {{ $destination->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-
+        <input type="hidden" name="destination_id" value="1">
         <div class="mb-3">
             <label>Theme Name</label>
             <input type="text" name="name" class="form-control"
@@ -47,5 +37,7 @@
 
         <a href="{{ route('themes.index') }}" class="btn btn-secondary">Back</a>
     </form>
+</div>
+</div>
 </div>
 @endsection

@@ -2,13 +2,15 @@
     <div class="container">
         <div class="d-flex align-items-center justify-content-between">
 
-            <!-- LOGO -->
-            <img src="{{ asset('logo.png') }}" alt="Logo" height="50">
+              <img src="#" alt="Logo" height="50">
 
             <!-- NAV -->
             <ul class="nav align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link" href="/package-calculator">Calculator</a>
+                    <a class="nav-link" href="/package-calculator">Package Calculator</a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link" href="/international-calculator">International Calculator</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About Us</a>
@@ -16,7 +18,8 @@
                
               
                 @auth
-                    @if (auth()->user()->role === 'Agent')
+                   @if (in_array(auth()->user()->role, ['Agent', 'Staff', 'Freelancer']))
+
                         <li class="nav-item dropdown ms-3">
                             <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
                                 {{ auth()->user()->name }}
@@ -29,8 +32,13 @@
                                     </a>
                                 </li>
                                  <li>
-                                    <a class="dropdown-item" href="{{ route('agent.dashboard') }}">
+                                    <a class="dropdown-item" href="{{ route('agent.profile') }}">
                                         Profile 
+                                    </a>
+                                </li>
+                                 <li>
+                                    <a class="dropdown-item" href="{{ route('calculation.report') }}">
+                                        Reports 
                                     </a>
                                 </li>
                                 <li>
@@ -45,11 +53,7 @@
                         </li>
                     @endif
                 @else
-                    <li class="nav-item ms-3">
-                        <a href="{{ route('register') }}" class="btn btn-outline-primary">
-                            Agent Login
-                        </a>
-                    </li>
+                   
                 @endauth
             </ul>
 

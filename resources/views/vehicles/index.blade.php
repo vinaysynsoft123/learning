@@ -9,13 +9,14 @@
             </a>
         </div>
 
-        <table class="table table-bordered">
-            <thead>
+        <table class="table table-bordered bg-white shadow-sm">
+            <thead class="bg-light">
                 <tr>
                     <th>Sr. No</th>
-                    <th>Name</th>
+                    <th>Vehicle Name</th>
                     <th>Capacity</th>
-                    <th>Price / Day</th>
+                    <th>Type</th>
+                    <th>Rate</th>
                     <th>Status</th>
                     <th width="150">Action</th>
                 </tr>
@@ -25,8 +26,18 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $vehicle->name }}</td>
-                        <td>{{ $vehicle->capacity }}</td>
-                        <td>₹{{ number_format($vehicle->price_per_day, 2) }}</td>
+                        <td>{{ $vehicle->capacity }} Pax</td>
+                        <td>
+                            <span class="text-capitalize">{{ str_replace('_', ' ', $vehicle->type) }}</span>
+                        </td>
+                        <td>
+                            @if ($vehicle->type === 'tour_basis')
+                                <span class="text-muted small">Tour Basis</span>
+                            @else
+                                ₹{{ number_format($vehicle->price_per_day, 2) }}
+                                <small class="text-muted">/ {{ $vehicle->type === 'per_day' ? 'day' : 'km' }}</small>
+                            @endif
+                        </td>
                         <td>
                             <span class="badge {{ $vehicle->status ? 'bg-success' : 'bg-danger' }}">
                                 {{ $vehicle->status ? 'Active' : 'Inactive' }}

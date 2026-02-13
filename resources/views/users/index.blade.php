@@ -16,6 +16,7 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Mobile No</th>
+                    <th>Role</th>
                     <th>Status</th>
                     <th>Created At</th>
                     <th width="150">Action</th>
@@ -28,7 +29,7 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->mobile }}</td>                     
-
+                        <td>{{ $user->role }}</td>
                         <td>
                             <span class="badge {{ $user->status ? 'bg-success' : 'bg-danger' }}">
                                 {{ $user->status ? 'Active' : 'Inactive' }}

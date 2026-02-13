@@ -12,7 +12,7 @@
             <thead>
                 <tr>
                     <th>Sr. No</th>
-                    <th>Destination</th>
+                    <!-- <th>Destination</th> -->
                     <th>Theme Name</th>
                     <th>Status</th>
                     <th width="150">Action</th>
@@ -22,7 +22,7 @@
                 @foreach ($themes as $theme)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $theme->destination->name ?? '-' }}</td>
+                        <!-- <td>{{ $theme->destination->name ?? '-' }}</td> -->
                         <td>{{ $theme->name }}</td>
                         <td>
                             <span class="badge {{ $theme->status ? 'bg-success' : 'bg-danger' }}">

@@ -17,7 +17,7 @@ class Package extends Model
         'discount',
         'inclusions',
         'exclusions',
-
+        'destination_id',
     ];
 
     protected $casts = [
@@ -26,22 +26,15 @@ class Package extends Model
     ];
 
     public function theme()
-    {
-        return $this->belongsTo(Theme::class);
-    }
+{
+    return $this->belongsTo(Theme::class);
+}
 
-    // Access theme → destination directly
-    public function destination()
-    {
-        return $this->hasOneThrough(
-            Destination::class,
-            Theme::class,
-            'id',              // Foreign key on themes
-            'id',              // Foreign key on destinations
-            'theme_id',        // Local key on packages
-            'destination_id'   // Local key on themes
-        );
-    }
+public function destination()
+{
+    return $this->belongsTo(Destination::class);
+}
+
 
     // Scope: Active packages
     public function scopeActive($query)
@@ -49,9 +42,13 @@ class Package extends Model
         return $query->where('status', 1);
     }
 
-        public function hotelCategory()
+    public function itineraries()
     {
-        return $this->hasMany(HotelCategory::class);
+        return $this->hasMany(PackageItinerary::class)->orderBy('sort_order', 'asc');
     }
 
+    public function mappedHotels()
+    {
+        return $this->hasMany(PackageHotel::class);
+    }
 }

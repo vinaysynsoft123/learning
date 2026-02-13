@@ -1,34 +1,44 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tour Package Price Calculator - Atripguys</title>
+
+    <title>@yield('title', 'gfgjj')</title>
 
     <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+
+    <!-- Font Awesome -->
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
 
-    <!-- Font Awesome for calendar icon -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    
-    <link href="{{ asset('asset/frontend/img/favicon.jpg') }}" rel="icon">
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('asset/frontend/img/favicon.jpg') }}">
 
-
-    <link href="{{ asset('asset/css/main.css') }}" rel="stylesheet" />
-    
+    <!-- Frontend CSS -->
+    <link rel="stylesheet" href="{{ asset('asset/css/main.css') }}">
 </head>
 
 <body>
+
+    {{-- FRONTEND HEADER --}}
     @include('frontend.layouts.header')
 
-    @yield('content')
+    {{-- PAGE CONTENT --}}
+    <main>
+        @yield('content')
+    </main>
 
-    {{-- @include('frontend.layouts.footer') --}}
+    {{-- FRONTEND FOOTER --}}
+    @include('frontend.layouts.footer')
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
 </body>
 </html>
