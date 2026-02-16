@@ -18,6 +18,7 @@ class Package extends Model
         'inclusions',
         'exclusions',
         'destination_id',
+        'type',
     ];
 
     protected $casts = [

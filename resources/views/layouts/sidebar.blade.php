@@ -42,6 +42,13 @@ a<div class="sidebar" id="sidebar">
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('packages.international') ? 'active' : '' }}"
+                href="{{ route('packages.international') }}">
+                <i class="bi bi-airplane me-3"></i> International Packages
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('vehicles') ? 'active' : '' }}"
                 href="{{ route('vehicles.index') }}"><i class="bi bi-people me-3"></i> Vehicles</a>
         </li>

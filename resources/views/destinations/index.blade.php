@@ -12,9 +12,10 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Sr. No</th>                  
+                    <th>Sr. No</th>
                     <th>Destionation Name</th>
                     <th>State</th>
+                    <th>Type</th>
                     <th>Status</th>
                     <th width="150">Action</th>
                 </tr>
@@ -24,7 +25,13 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $destination->name }}</td>
-                        <td>{{ $destination->state->name ?? '-' }}</td>                    
+                        <td>{{ $destination->state->name ?? '-' }}</td>
+                        <td>
+                            <span class="badge bg-info text-dark">
+                                {{ ucfirst($destination->type) }}
+                            </span>
+                        </td>
+
                         <td>
                             <span class="badge {{ $destination->status ? 'bg-success' : 'bg-danger' }}">
                                 {{ $destination->status ? 'Active' : 'Inactive' }}

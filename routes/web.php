@@ -43,7 +43,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/profile', [SettingsController::class, 'edit'])->name('admin.profile');
     Route::resource('destinations', DestinationController::class)->except(['show']);
         
+    Route::get('/packages/international', [PackageController::class, 'international'])->name('packages.international');
+    Route::get('/packages/domestic', [PackageController::class, 'domestic'])->name('packages.domestic');
+
     Route::resource('packages', PackageController::class);
+
+
     Route::resource('themes', ThemeController::class)->except(['show']);
     Route::resource('hotel-categories', HotelCategoryController::class)->except(['show']);
     Route::resource('hotels', HotelController::class);

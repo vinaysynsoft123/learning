@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 
 class DestinationController extends Controller
 {
-    public function index()
-    {
-        $destinations = Destination::with('state')->latest()->get();
-        return view('destinations.index', compact('destinations'));
-    }
+  public function index()
+{
+    $destinations = Destination::with('state')->latest()->paginate(20);
+    return view('destinations.index', compact('destinations'));
+}
 
     public function create()
     {
@@ -20,19 +20,27 @@ class DestinationController extends Controller
         return view('destinations.form', compact('states'));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'state_id' => 'required|exists:states,id',
-            'name'     => 'required|string|max:255',
-            'status'   => 'required|boolean',
-        ]);
+  public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'type' => 'required|in:domestic,international',
+        'status' => 'required|boolean',
+        'state_id' => 'nullable|required_if:type,domestic',
+    ]);
 
-        Destination::create($request->all());
+    $data = $request->all();
 
-        return redirect()->route('destinations.index')
-            ->with('success', 'Destination added successfully');
+    if ($request->type === 'international') {
+        $data['state_id'] = null;
     }
+
+    Destination::create($data);
+
+    return redirect()->route('destinations.index')
+        ->with('success', 'Destination created successfully.');
+}
+
 
     public function edit(Destination $destination)
     {
@@ -40,19 +48,28 @@ class DestinationController extends Controller
         return view('destinations.form', compact('destination', 'states'));
     }
 
-    public function update(Request $request, Destination $destination)
-    {
-        $request->validate([
-            'state_id' => 'required|exists:states,id',
-            'name'     => 'required|string|max:255',
-            'status'   => 'required|boolean',
-        ]);
+  public function update(Request $request, Destination $destination)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'type' => 'required|in:domestic,international',
+        'status' => 'required|boolean',
+        'state_id' => 'nullable|required_if:type,domestic|exists:states,id',
+    ]);
 
-        $destination->update($request->all());
+    $data = $request->all();
 
-        return redirect()->route('destinations.index')
-            ->with('success', 'Destination updated successfully');
+    // International → state NULL
+    if ($request->type === 'international') {
+        $data['state_id'] = null;
     }
+
+    $destination->update($data);
+
+    return redirect()->route('destinations.index')
+        ->with('success', 'Destination updated successfully');
+}
+
 
     public function destroy(Destination $destination)
     {

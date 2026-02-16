@@ -22,15 +22,45 @@ class PackageController extends Controller
         return view('packages.index', compact('packages','destinations'));
     }
 
-    public function create()
+
+   public function international()
     {
+        $packages = Package::with(['theme.destination'])
+            ->where('type', 'international')
+            ->latest()
+            ->paginate(20);
+
         $destinations = Destination::active()->get();
+
+        return view('packages.index_international', compact('packages', 'destinations'));
+    }
+
+
+    public function domestic()
+    {
+        $packages = Package::where('type', 'domestic')->get();
+        return view('packages.index', compact('packages'));
+    }
+
+
+   public function create()
+    {
+        $domesticDestinations = Destination::where('type', 'domestic')->active()->get();
+        $internationalDestinations = Destination::where('type', 'international')->active()->get();
+
         $themes = Theme::active()->get();
         $hotels = Hotel::all();
         $categories = HotelCategory::active()->get();
 
-        return view('packages.form', compact('destinations', 'themes', 'hotels', 'categories'));
+        return view('packages.form', compact(
+            'domesticDestinations',
+            'internationalDestinations',
+            'themes',
+            'hotels',
+            'categories'
+        ));
     }
+
 
     public function store(Request $request)
     {
@@ -44,6 +74,7 @@ class PackageController extends Controller
             'description' => 'required|string',  
             'inclusions' => 'nullable|string',
             'exclusions' => 'nullable|string',
+            'type'       => 'required|in:domestic,international',
         ]);
 
         DB::transaction(function () use ($request) {
@@ -78,16 +109,27 @@ class PackageController extends Controller
             ->with('success', 'Package added successfully');
     }
 
-    public function edit(Package $package)
-    {
-        $package->load(['itineraries', 'mappedHotels']);
-        $destinations = Destination::active()->get();
-        $themes = Theme::active()->get();
-        $hotels = Hotel::all();
-        $categories = HotelCategory::active()->get();
+   public function edit(Package $package)
+{
+    $package->load(['itineraries', 'mappedHotels']);
 
-        return view('packages.form', compact('package', 'destinations', 'themes', 'hotels', 'categories'));
-    }
+    $domesticDestinations = Destination::where('type', 'domestic')->active()->get();
+    $internationalDestinations = Destination::where('type', 'international')->active()->get();
+
+    $themes = Theme::active()->get();
+    $hotels = Hotel::all();
+    $categories = HotelCategory::active()->get();
+
+    return view('packages.form', compact(
+        'package',
+        'domesticDestinations',
+        'internationalDestinations',
+        'themes',
+        'hotels',
+        'categories'
+    ));
+}
+
 
     public function update(Request $request, Package $package)
     {
@@ -101,6 +143,7 @@ class PackageController extends Controller
             'description' => 'required|string',  
             'inclusions' => 'nullable|string',
             'exclusions' => 'nullable|string',
+            'type'       => 'required|in:domestic,international',
         ]);
 
         DB::transaction(function () use ($request, $package) {
@@ -187,4 +230,11 @@ class PackageController extends Controller
 
         return $pdf->stream($package->name . '-Itinerary.pdf');
     }
+
+    public function show($id)
+    {
+        $package = Package::findOrFail($id);
+        return view('packages.show', compact('package'));
+    }
+
 }

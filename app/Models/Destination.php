@@ -12,7 +12,8 @@ class Destination extends Model
     protected $fillable = [
         'state_id',
         'name',
-        'status'
+        'status',
+           'type',
     ];
 
     protected $casts = [
