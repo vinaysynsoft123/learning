@@ -52,6 +52,12 @@ a<div class="sidebar" id="sidebar">
             <a class="nav-link {{ request()->routeIs('vehicles') ? 'active' : '' }}"
                 href="{{ route('vehicles.index') }}"><i class="bi bi-people me-3"></i> Vehicles</a>
         </li>
+         <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('users') ? 'active' : '' }}"
+                href="{{ route('users') }}">
+                <i class="bi bi-building me-3"></i> Users
+            </a>
+        </li>
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('reports') ? 'active' : '' }}"
                 href="{{ route('reports.index') }}">

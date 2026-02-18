@@ -111,7 +111,17 @@
                         <label>Description</label>
                         <textarea name="description" class="form-control" rows="3">{{ old('description', $package->description ?? '') }}</textarea>
                     </div>
+             
+                    <div class="mb-3">
+                        <label>Inclusions</label>
+                        <textarea name="inclusions" class="form-control" rows="3">{{ old('inclusions', $package->inclusions ?? '') }}</textarea>
+                    </div>
 
+                
+                    <div class="mb-3">
+                        <label>Exclusions</label>
+                        <textarea name="exclusions" class="form-control" rows="3">{{ old('exclusions', $package->exclusions ?? '') }}</textarea>
+                    </div>
                     {{-- Status --}}
                     <div class="mb-3">
                         <label>Status</label>

@@ -7,6 +7,7 @@ use App\Models\Vehicle;
 use App\Models\Theme;
 use App\Models\Package;
 use App\Models\Destination;
+use App\Models\TourCalculation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,46 +15,78 @@ class ReportController extends Controller
 {
     public function index(Request $request)
     {
-        $year  = $request->year ?? now()->year;
+        $userId      = $request->user_id;
+        $startDate   = $request->start_date;
+        $endDate     = $request->end_date;
+        $quickFilter = $request->quick_filter;
 
-        // ================= MASTER COUNTS =================
-        $totalUsers          = User::whereYear('created_at', $year)->count();
-        $totalHotelCategories= HotelCategory::whereYear('created_at', $year)->count();
-        $totalVehicles       = Vehicle::whereYear('created_at', $year)->count();
-        $totalThemes         = Theme::whereYear('created_at', $year)->count();
-        $totalPackages       = Package::whereYear('created_at', $year)->count();
-        $totalDestinations   = Destination::whereYear('created_at', $year)->count();
+        // Apply quick filters if selected
+        if ($quickFilter) {
+            $endDate = now()->toDateString();
+            if ($quickFilter == '3m') {
+                $startDate = now()->subMonths(3)->toDateString();
+            } elseif ($quickFilter == '6m') {
+                $startDate = now()->subMonths(6)->toDateString();
+            } elseif ($quickFilter == 'last_year') {
+                $startDate = now()->subYear()->startOfYear()->toDateString();
+                $endDate = now()->subYear()->endOfYear()->toDateString();
+            } elseif ($quickFilter == 'this_year') {
+                $startDate = now()->startOfYear()->toDateString();
+                $endDate = now()->toDateString();
+            }
+        }
 
-        // ================= MONTHLY DATA =================
-        $monthlyUsers = User::select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as total'))
-            ->whereYear('created_at', $year)
-            ->groupBy('month')
+        // Query Tour Calculations for revenue and package counts
+        $query = TourCalculation::query();
+
+        if ($userId) {
+            $query->where('agent_id', $userId);
+        }
+
+        if ($startDate && $endDate) {
+            $query->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+        }
+
+        $calculations = $query->get();
+
+        $totalEarnings = $calculations->sum('total_price');
+        $packageCount  = $calculations->count();
+        // Since there's no payment status, we'll assume "pending" logic is TBD or use a placeholder
+        $pendingAmount = 0; 
+
+        // Master counts (optional: keep or remove depending on view needs)
+        $totalUsers          = User::count();
+        $totalPackages       = Package::count();
+        $totalDestinations   = Destination::count();
+
+        // Monthly revenue for chart (based on filters)
+        $monthlyRevenue = TourCalculation::select(
+                DB::raw('MONTH(created_at) as month'), 
+                DB::raw('YEAR(created_at) as year'),
+                DB::raw('SUM(total_price) as total')
+            )
+            ->when($userId, fn($q) => $q->where('agent_id', $userId))
+            ->when($startDate && $endDate, fn($q) => $q->whereBetween('created_at', [$startDate, $endDate]))
+            ->groupBy('year', 'month')
+            ->orderBy('year')
             ->orderBy('month')
-            ->pluck('total', 'month');
+            ->get();
 
-        $monthlyHotelCategories = HotelCategory::select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as total'))
-            ->whereYear('created_at', $year)
-            ->groupBy('month')
-            ->orderBy('month')
-            ->pluck('total', 'month');
-
-        $monthlyVehicles = Vehicle::select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as total'))
-            ->whereYear('created_at', $year)
-            ->groupBy('month')
-            ->orderBy('month')
-            ->pluck('total', 'month');
+        $users = User::whereIn('role', ['Staff', 'Agent', 'Freelancer'])->get();
 
         return view('reports.index', compact(
-            'year',
             'totalUsers',
-            'totalHotelCategories',
-            'totalVehicles',
-            'totalThemes',
             'totalPackages',
             'totalDestinations',
-            'monthlyUsers',
-            'monthlyHotelCategories',
-            'monthlyVehicles'
+            'totalEarnings',
+            'packageCount',
+            'pendingAmount',
+            'users',
+            'userId',
+            'startDate',
+            'endDate',
+            'quickFilter',
+            'monthlyRevenue'
         ));
     }
 }

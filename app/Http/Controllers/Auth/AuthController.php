@@ -97,11 +97,11 @@ class AuthController extends Controller
     }
 
 
- public function dashboard(DashboardService $dashboardService)
+    public function dashboard(DashboardService $dashboardService)
     {
-        $counts = $dashboardService->masterCounts();
+        $data = $dashboardService->getDashboardData();
 
-        return view('dashboard', compact('counts'));
+        return view('dashboard', $data);
     }
 
     // Logout

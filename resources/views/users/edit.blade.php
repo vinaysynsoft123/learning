@@ -30,7 +30,14 @@
                     Mobile Verified
                 </label>
             </div>
-            <input type="hidden" name="role" value="Agent">
+             <div class="mb-3">
+                <label>Role</label>
+                <select name="role" class="form-control">
+                    <option value="Staff" @selected($user->role == 'Staff')>Staff</option>
+                    <option value="Freelancer" @selected($user->role == 'Freelancer')>Freelancer</option>
+                    <option value="Agent" @selected($user->role == 'Agent')>Agent</option>
+                </select>
+            </div>
 
             <div class="mb-3">
                 <label>Status</label>
